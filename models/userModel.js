@@ -33,3 +33,44 @@ exports.getData = (email) => {
 		})
 	})
 }
+
+
+exports.verifyUsername = (username) => {
+	return new Promise((resolve, reject) => {
+		conn.query('SELECT * FROM users WHERE username = ?', username, function (err, result) {
+  		if (err) {
+  			reject(err);
+  		} else {
+  			if (result.length > 0) {
+  				const err = new Error
+  				err.status = 409
+  				err.message = 'Username alredy exist'
+  				reject(err)
+  			} else {
+  				const exist = false;
+  				resolve(exist)
+  			}
+  		}
+  	})
+	})
+}
+
+exports.verifyEmail = (email) => {
+	return new Promise((resolve, reject) => {
+		conn.query('SELECT * FROM users WHERE email = ?', email, function (err, result) {
+  		if (err) {
+  			reject(err);
+  		} else {
+  			if (result.length > 0) {
+  				const err = new Error
+  				err.status = 409
+  				err.message = 'Email alredy exist'
+  				reject(err)
+  			} else {
+  				const exist = false;
+  				resolve(exist)
+  			}
+  		}
+  	})
+	})
+}
