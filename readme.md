@@ -78,13 +78,13 @@ $ npm start
 
 #### GET Request
 ```
- - "/api/product" => Display products, with default pagination {page: 1, limit: 4}. 
- 	- Possible Query:
-		- search -> {input: search keywords}, search products that have {input} in their title.
-		- sortby -> {input: column name}, sort products based on {input}.
-	    - sort   -> {input: asc / desc}, sort products ascending or descending based on {input}.
-	    - page 	 -> {input: number}, display page based on {input}.
-	    - limit  -> {input: number}, config how many product displayed on page.
+ * "/api/product" => Display products, with default pagination {page: 1, limit: 4}. 
+ 	* Possible Query:
+		* search -> {input: search keywords}, search products that have {input} in their title.
+		* sortby -> {input: column name}, sort products based on {input}.
+	    * sort   -> {input: asc / desc}, sort products ascending or descending based on {input}.
+	    * page 	 -> {input: number}, display page based on {input}.
+	    * limit  -> {input: number}, config how many product displayed on page.
 
  - "/api/product/{id}" => Display product with {id}.
 ```
