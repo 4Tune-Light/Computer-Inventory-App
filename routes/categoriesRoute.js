@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const auth = require('../middlewares/auth')
-const categoryController = require('../controllers/categoryController');
+const categoryController = require('../controllers/categoriesController');
 
 router.get('', categoryController.getCategories);
 router.get('/:id', categoryController.getCategory);

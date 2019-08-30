@@ -1,7 +1,7 @@
 require('dotenv').config()
 const conn = require('../configs/db');
 const jwt = require('jsonwebtoken')
-const model = require('../models/userModel')
+const model = require('../models/usersModel')
 
 const bcrypt = require('bcrypt');
 const saltRounds = parseInt(process.env.SALT);
@@ -39,7 +39,10 @@ exports.createUser = (req, res, next) => {
 								      error: false,
 								      message: `Success to register`,
 								      id: result.insertId,
-								      data,
+								      data: {
+								      	username: data.username,
+								      	email: data.email
+								      },
 								      token
 								    })
 					  			})

@@ -1,5 +1,5 @@
 const conn = require('../configs/db');
-const model = require('../models/categoryModel')
+const model = require('../models/categoriesModel')
 
 
 
@@ -10,7 +10,8 @@ exports.getCategories = (req, res, next) => {
         res.json({
           status: 200,
           error: false,
-          data: result
+          data: result,
+          total: result.length
         })
       } else {
         const err = new Error

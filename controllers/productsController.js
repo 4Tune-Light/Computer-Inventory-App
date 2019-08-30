@@ -1,5 +1,5 @@
 const conn = require('../configs/db')
-const model = require('../models/productModel')
+const model = require('../models/productsModel')
 
 
 
