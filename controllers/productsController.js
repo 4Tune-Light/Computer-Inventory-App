@@ -19,7 +19,8 @@ exports.getProducts = (req, res, next) => {
           status: 200,
           error: false,
           page: req.query.page,
-          data: result
+          data: result,
+          total: result.length
         })
       } else {
         const err = new Error
