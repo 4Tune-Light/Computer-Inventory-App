@@ -82,9 +82,9 @@ $ npm start
  	a. Possible Query:
 		1) search -> {input: search keywords}, search products that have {input} in their title.
 		2) sortby -> {input: column name}, sort products based on {input}.
-	    3) sort   -> {input: asc / desc}, sort products ascending or descending based on {input}.
-	    4) page	  -> {input: number}, display page based on {input}.
-	    5) limit  -> {input: number}, config how many product displayed on page.
+	  3) sort   -> {input: asc / desc}, sort products ascending or descending based on {input}.
+	  4) page	  -> {input: number}, display page based on {input}.
+	  5) limit  -> {input: number}, config how many product displayed on page.
 
  2. "/api/product/{id}" => Display product with {id}.
 ```
@@ -152,7 +152,7 @@ $ npm start
 
 #### DELETE Request
 ```
- - "/api/category/{id}" => Delete category with {id}.
+ 1. "/api/category/{id}" => Delete category with {id}.
 ```
 
 
