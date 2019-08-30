@@ -30,6 +30,11 @@ $ cd Computer-Inventory-App
 $ npm install
 ```
 
+### Import Database Design
+```
+Import computer_inventory.sql into your database.
+```
+
 ### Create Environment Variable
 ```
 $ cp .env.example .env
