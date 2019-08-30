@@ -8,8 +8,11 @@ exports.getDatas = (data) => {
 				      ' FROM products AS a INNER JOIN categories AS b ON a.id_category = b.id' +
 				      ' WHERE a.name LIKE ?' +
 				      ' ORDER BY ' + data.sortBy + ' '+ data.sort +' LIMIT ?, ?'
-		
-		conn.query(query, [data.search, data.offset, data.limit], (err, result) => {
+		const query2 = '; SELECT COUNT(*) as total FROM products WHERE name LIKE ?'
+
+		console.log(query + query2)
+
+		conn.query(query + query2, [data.search, data.offset, data.limit, data.search], (err, result) => {
 			if (err) {
 				reject(err)
 			} else {

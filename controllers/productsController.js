@@ -19,8 +19,8 @@ exports.getProducts = (req, res, next) => {
           status: 200,
           error: false,
           page: req.query.page,
-          data: result,
-          total: result.length
+          data: result[0],
+          total: result[1]
         })
       } else {
         const err = new Error
@@ -30,8 +30,7 @@ exports.getProducts = (req, res, next) => {
       }
     })
     .catch(err => {
-      err.status = 400
-      err.message = 'Products not found'
+      
       next(err);
     })
 }
