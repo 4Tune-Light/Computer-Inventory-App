@@ -71,22 +71,6 @@ exports.updateData = (data, id) => {
 
 
 
-exports.deleteData = (id) => {
-	return new Promise((resolve, reject) => {
-		const query = 'DELETE FROM products WHERE id = ?'
-		
-		conn.query(query, id, (err, result) => {
-			if (err) {
-				reject(err)
-			} else {
-				resolve(result)
-			}
-		})
-	})
-}
-
-
-
 exports.addOrReduce = (data, id) => {
 	return new Promise((resolve, reject) => {
 
@@ -115,5 +99,21 @@ exports.addOrReduce = (data, id) => {
 	    err.message = 'Wrong action type'
 	    reject(err)
 		}
+	})
+}
+
+
+
+exports.deleteData = (id) => {
+	return new Promise((resolve, reject) => {
+		const query = 'DELETE FROM products WHERE id = ?'
+		
+		conn.query(query, id, (err, result) => {
+			if (err) {
+				reject(err)
+			} else {
+				resolve(result)
+			}
+		})
 	})
 }

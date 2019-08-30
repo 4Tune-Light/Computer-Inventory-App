@@ -131,22 +131,6 @@ exports.updateProduct = (req, res, next) => {
 
 
 
-exports.deleteProduct = (req, res, next) => {
-  model.deleteData(req.params.id)
-    .then(result => res.json({
-      status: 200,
-      error: false,
-      message: `Success to delete product with id ${req.params.id}`
-    }))
-    .catch(err => {
-      err.status = 400
-      err.message = `Failed to delete product with id ${req.params.id}`
-      next(err)
-    })
-}
-
-
-
 exports.addOrReduceQuantity = (req, res, next) => {
   if (isNaN(Number(req.body.by)) === true && typeof req.body.by != 'undefined') {
     const err = new Error
@@ -175,4 +159,20 @@ exports.addOrReduceQuantity = (req, res, next) => {
       updated_at: new Date()
     }))
     .catch(err => next(err))
+}
+
+
+
+exports.deleteProduct = (req, res, next) => {
+  model.deleteData(req.params.id)
+    .then(result => res.json({
+      status: 200,
+      error: false,
+      message: `Success to delete product with id ${req.params.id}`
+    }))
+    .catch(err => {
+      err.status = 400
+      err.message = `Failed to delete product with id ${req.params.id}`
+      next(err)
+    })
 }
