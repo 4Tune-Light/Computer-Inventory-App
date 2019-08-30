@@ -62,15 +62,15 @@ $ npm start
 #### POST Request
 ```
  1. "/api/register" => Create user and return token. 
- 	a. Required Body: 
- 		1) username: string
- 		2) email: string
- 		3) password: string
+    a. Required Body: 
+       1) username: string
+       2) email: string
+       3) password: string
 
  2. "/api/login" => Log In user and return token. 
- 	a. Required Body:
- 		1) email: string
- 		2) password: string
+    a. Required Body:
+       1) email: string
+       2) password: string
 ```
 
 
