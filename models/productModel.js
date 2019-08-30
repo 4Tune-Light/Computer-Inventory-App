@@ -90,7 +90,14 @@ exports.addOrReduce = (data, id) => {
 				if (err) {
 					reject(err)
 				} else {
-					resolve(result)
+					if (result.affectedRows > 0) {
+						resolve(result)
+					} else {
+						const err = new Error
+						err.status = 400
+						err.message = 'Quantity cannot be less than 0'
+						reject(err)
+					}
 				}
 			})
 		} else {

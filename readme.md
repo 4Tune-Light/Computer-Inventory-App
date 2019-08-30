@@ -79,7 +79,7 @@ $ npm start
 #### GET Request
 ```
  1. "/api/product" => Display products, with default pagination {page: 1, limit: 4}. 
-    a. Possible Query:
+    a. Options Query:
        1) search -> {input: search keywords}, search products that have {input} in their title.
        2) sortby -> {input: column name}, sort products based on {input}.
        3) sort   -> {input: asc / desc}, sort products ascending or descending based on {input}.
@@ -118,12 +118,14 @@ $ npm start
  1. "/api/product/{id}" => Add or reduce product quantity with {id}.
     a. Required Header : { auth: token }
     b. Required Body: { action: add / reduce }
-    c. Possible Body: { by: how many quantity will be {action} }
+    c. Options Body: { by: how many quantity will be {action} }
 ```
 
 #### DELETE Request
 ```
  1. "/api/product/{id}" => Delete product with {id}.
+    a. Required Header : { auth: token }
+
 ```
 
 
