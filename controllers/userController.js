@@ -1,83 +1,100 @@
 require('dotenv').config()
 const conn = require('../configs/db');
 const jwt = require('jsonwebtoken')
+const model = require('../models/userModel')
 
-exports.createUser = (req, res) => {
+const bcrypt = require('bcrypt');
+const saltRounds = parseInt(process.env.SALT);
+
+
+exports.createUser = (req, res, next) => {
   const {username, password, email} = req.body;
-  const time = new Date();
+  
 
   if (!username || !password|| !email) {
-    res.status(300).json({
-      status: 300,
-      message: 'Username, password, and email are needed'
-    })
+    const err = new Error
+    err.status = 400
+    err.message = 'Username, password, and email are required'
+    next(err)
   }
 
-  const q = 'INSERT INTO users (username, password, email) VALUES (?, ?, ?)';
-  conn.query(q, [username, password, email], (err, result) => {
-    if (err) {
-      res.status(500).json({
-        status: 500,
-        error: true,
-        message: 'Register Failed'
-      })
-    } else {
-			const token = jwt.sign({username, email}, process.env.JWT_KEY, { expiresIn: process.env.JWT_EXP })
-
-      res.status(200).json({
-        status: 200,
-        error: false,
-        message: 'Register Successful',
-        id: result.insertId,
-        data: {
-        	username,
-        	email,
-        	token
-        }
-      });
-    }
-  })
+  let data = {username, email}
+  
+	bcrypt.genSalt(saltRounds, function(err, salt) {
+	  bcrypt.hash(password, salt, function(err, hash) {
+	  	if (err) {
+	  		err.status = 400
+	  		err.message = '400 Bad Request'
+	  		next(err);
+	  	} else {
+	  		data.password = hash
+	  		model.createData(data)
+	  			.then(result => {
+	  				const token = jwt.sign({username, email}, process.env.JWT_KEY, { expiresIn: process.env.JWT_EXP })
+	  				res.json({
+				      status: 200,
+				      error: false,
+				      message: `Success to register`,
+				      id: result.insertId,
+				      data,
+				      token
+				    })
+	  			})
+		    .catch(err => {
+		      err.status = 400
+		      err.message = `Failed to register`
+		      next(err);
+		    })
+			}
+	  })
+	})
 }
 
-exports.loginUser = (req, res) => {
-	const {email, password} = req.body
 
-	if (!email || !password) {
-		res.status(300).json({
-			status: 300,
-			error: true,
-			message: 'Email and password are needed'
-		})
-	}
 
-	conn.query('SELECT * FROM users WHERE email = ?', email, (err, result) => {
-		if (err) {
-			res.status(500).json({
-				status: 500,
-				error: true,
-				message: 'Login Failed'
-			})
-		} else {
-			if (result[0].password == password) {
-				const token = jwt.sign({username: result[0].username, email: result[0].email}, process.env.JWT_KEY, { expiresIn: process.env.JWT_EXP })
-				res.status(200).json({
-					status: 200,
-					error: false,
-					user: {
-						id: result[0].id,
-						username: result[0].username,
-						email: result[0].email
-					},
-					token: token
+exports.loginUser = (req, res, next) => {
+  const {email, password} = req.body
+
+	if (!email|| !password) {
+    const err = new Error
+    err.status = 400
+    err.message = 'Email and password are required'
+    next(err)
+  }
+
+  model.getData(email)
+    .then(result => {
+      if (result.length > 0) {
+      	bcrypt.compare(password, result[0].password, function(err, match) {
+	    		if (match) {
+	    			const token = jwt.sign({username: result[0].username, email: result[0].email}, process.env.JWT_KEY, { expiresIn: process.env.JWT_EXP });
+						res.status(200).json({
+							status: 200,
+							error: false,
+							user: {
+								id: result[0].id,
+								username: result[0].username,
+								email: result[0].email
+							},
+							token
+						})
+					} else {
+						const err = new Error
+		        err.status = 400
+		        err.message = 'Email or password is wrong'
+		        next(err);
+					}
 				})
-			} else {
-				console.log(result[0])
-				res.status(300).json({
-					status: 300, 
-					error: true,
-					message: 'Wrong password or email'
-				})
-			}
-		}
-	})
+      } else {
+      	const err = new Error
+        err.status = 400
+        err.message = 'Email does not exist'
+        next(err);
+      }
+    })
+    .catch(err => {
+    	err.status = 400
+    	err.message = '400 Bad Request'
+    	next(err)
+    })
 }

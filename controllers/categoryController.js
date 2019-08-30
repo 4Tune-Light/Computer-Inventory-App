@@ -1,130 +1,125 @@
 const conn = require('../configs/db');
+const model = require('../models/categoryModel')
 
-exports.getCategories = (req, res) => {
-  conn.query('SELECT * FROM categories', (err, rows) => {
-    if (err) {
-      res.status(400).json({
-        status: 400,
-        error: true,
-        message: 'Category Not Found'
-      })
-    } else {
-      res.status(200).json({
-        status: 200,
-        error: false,
-        data: result
-      });
-    }
-  })
-}
 
-exports.getCategory = (req, res) => {
-  conn.query('SELECT * FROM categories WHERE id = ?', req.params.id, (err, row) => {
-    if (err) {
-      res.status(500).json({
-        status: 500,
-        error: true,
-        message: 'Internal Server Error'
-      })
-    } else {
+
+exports.getCategories = (req, res, next) => {
+  model.getDatas()
+    .then(result => {
       if (result.length > 0) {
-        console.log(result)
-        res.status(200).json({
+        res.json({
           status: 200,
           error: false,
           data: result
-        });
-      } else {
-        res.status(400).json({
-          status: 400,
-          error: true,
-          message: `Category with id ${req.params.id} not found`
         })
+      } else {
+        const err = new Error
+        err.status = 404
+        err.message = 'Category not found'
+        next(err);
       }
-    }
-  })
+    })
+    .catch(err => {
+      err.status = 400
+      err.message = 'Category not found'
+      next(err);
+    })
 }
 
-exports.createCategory = (req, res) => {
-  const {name} = req.body
-  const time = new Date();
 
-  if (!name) {
-    res.status(300).json({
-      status: 300,
-      message: 'Name is needed'
+
+exports.getCategory = (req, res, next) => {
+  model.getData(req.params.id)
+    .then(result => {
+      if (result.length > 0) {
+        res.json({
+          status: 200,
+          error: false,
+          data: result
+        })
+      } else {
+        const err = new Error
+        err.status = 404
+        err.message = 'Category not found'
+        next(err);
+      }
     })
+    .catch(err => {
+      err.status = 400
+      err.message = 'Category not found'
+      next(err);
+    })
+}
+
+
+
+exports.createCategory = (req, res, next) => {
+  if (!req.body.name) {
+    const err = new Error
+    err.status = 400
+    err.message = 'Name is required'
+    next(err)
   }
 
-  conn.query('INSERT INTO categories name VALUES ?', name, (err, result) => {
-    if (err) {
-      res.status(500).json({
-        status: 500,
-        error: true,
-        message: 'Failed to create category'
-      })
-    } else {
-      res.status(200).json({
-        status: 200,
-        error: false,
-        message: 'Success creating category',
-        data: [
-                { 
-                  "id": result.insertedId,
-                  "name" : req.body,
-                  "date_added": time, 
-                  "date_updated": time
-                }
-              ]
-      });
-    }
-  })
-}
-
-exports.updateCategory = (req, res) => {
-  const {name} = req.body
-  const time = new Date();
-
-  if (!name) {
-    res.status(300).json({
-      status: 300,
-      message: 'Name is needed!'
-    })
+  const data = {
+    name: req.body.name,
+    created_at: new Date(),
+    updated_at: new Date()
   }
-  conn.query('UPDATE categories SET name = ?, date_added = date_added, date_updated = ? WHERE id = ?', [name, time, req.params.id], (err, result) => {
-    if (err) {
-      res.status(400).json({
-        status: 400,
-        error: true,
-        message: `Failed to update category with id ${req.params.id}`
-      })
-    } else {
-      res.status(200).json({
-        status: 200,
-        error: false,
-        message: `Success updating category with id ${req.params.id}`,
-        data: result
-      });
-    }
-  })
+
+  model.createData(data)
+    .then(result => res.json({
+      status: 200,
+      error: false,
+      message: `Success to create category`,
+      id: result.insertId,
+      data
+    }))
+    .catch(err => {
+      err.status = 400
+      err.message = `Failed to create category`
+      next(err);
+    })
 }
 
-exports.deleteCategory = (req, res) => {
-  conn.query('DELETE FROM categories WHERE id = ?', req.params.id, (err, result) => {
-    if (err) {
-      res.status(400).json({
-        status: 400,
-        error: true,
-        message: `Failed to delete category with id ${req.params.id}`
-      })
-    } else {
-      res.status(200).json({
-        status: 200,
-        error: false,
-        message: `Success deleting category with id ${req.params.id}`,
-        data: result
-      });
-    }
-  })
+exports.updateCategory = (req, res, next) => {
+  if (!req.body.name) {
+    const err = new Error
+      err.status = 400
+      err.message = 'Name is required'
+      next(err)
+  }
+
+  const data = {
+    name: req.body.name,
+    updated_at: new Date()
+  }
+
+  model.updateData(data, req.params.id)
+    .then(result => res.json({
+      status: 200,
+      error: false,
+      message: `Success to update category with id ${req.params.id}`,
+      data
+    }))
+    .catch(err => {
+      err.status = 400
+      err.message = `Failed to update category with id ${req.params.id}`
+      next(err);
+    })
+}
+
+exports.deleteCategory = (req, res, next) => {
+  model.deleteData(req.params.id)
+    .then(result => res.json({
+      status: 200,
+      error: false,
+      message: `Success to delete category with id ${req.params.id}`
+    }))
+    .catch(err => {
+      err.status = 400
+      err.message = `Failed to delete category with id ${req.params.id}`
+      next(err)
+    })
 }
 

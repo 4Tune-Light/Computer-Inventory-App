@@ -9,5 +9,4 @@ router.use('/category', category)
 router.use('/product', product)
 router.use('', user)
 
-
 module.exports = router;
