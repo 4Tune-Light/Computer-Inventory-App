@@ -11,7 +11,6 @@ exports.getProducts = (req, res, next) => {
   const search = req.query.search ? `%${req.query.search}%` : '%%'
 
   const data = {sortBy, sort, limit, offset, search}
-  console.log(data)
 
   model.getDatas(data)
     .then(result => {
