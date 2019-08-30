@@ -60,7 +60,7 @@ $ npm start
 ### USER Routes
 
 #### POST Request
-
+```
  - "/api/register" => Create user and return token. 
  	- Required Body: 
  		- username: string
@@ -71,11 +71,13 @@ $ npm start
  	- Required Body:
  		- email: string
  		- password: string
+```
 
 
 ### PRODUCT Routes
 
 #### GET Request
+```
  - "/api/product" => Display products, with default pagination {page: 1, limit: 4}. 
  	- Possible Query:
 		- search -> {input: search keywords}, search products that have {input} in their title.
@@ -85,9 +87,10 @@ $ npm start
 	    - limit  -> {input: number}, config how many product displayed on page.
 
  - "/api/product/{id}" => Display product with {id}.
+```
 
 #### POST Request
-
+```
  - "/api/product" => Create product and return inserted data.
  	- Required Header: { auth: token }
  	- Required Body: 
@@ -96,9 +99,10 @@ $ npm start
  		- image: string //image url
  		- id_category: number
  		- quantity: number
+```
 
 #### PUT Request
-
+```
  - "/api/product/{id}" => Update product with {id} and return inserted data.
  	- Required Header: { auth: token }
  	- Required Body: 
@@ -107,41 +111,49 @@ $ npm start
  		- image: string //image url
  		- id_category: number
  		- quantity: number
+ ```
 
 #### PATCH Request
-
+```
  - "/api/product/{id}" => Add or reduce product quantity with {id}.
  	- Required Header : { auth: token }
  	- Required Body: { action: add / reduce }
  	- Possible Body: { by: how many quantity will be {action} }
+```
 
 #### DELETE Request
-
+```
  - "/api/product/{id}" => Delete product with {id}.
+```
 
 
 ### CATEGORY Routes
 
 #### GET Request
+```
  - "/api/cateogry" => Display categories. 
 
  - "/api/product/{id}" => Display category with {id}.
+```
 
 #### POST Request
-
+```
  - "/api/category" => Create category and return inserted data.
  	- Required Header: { auth: token }
  	- Required Body: { name: string }
+```
 
 #### PUT Request
-
+```
  - "/api/category/{id}" => Update category with {id} and return inserted data.
  	- Required Header: { auth: token }
  	- Required Body: { name: string }
+```
 
 #### DELETE Request
-
+```
  - "/api/category/{id}" => Delete category with {id}.
+```
 
 
 ### License
