@@ -47,7 +47,7 @@ DB_NAME = "YOUR-DB-NAME"
 JWT_KEY = "YOUR-SECRET-KEY"
 JWT_EXP = "EXPIRED-TIME" //EXAMPLE "1h" for 1 hour, "1000" for 1000 miliseconds
 
-SALT = "SALT-ROUND" //EXAMPLE "10" for bcrypt saltRound
+SALT = "SALT-ROUND" //EXAMPLE "10" ( number )
 
 ```
 ### Start Development Server
@@ -61,16 +61,16 @@ $ npm start
 
 #### POST Request
 ```
- - "/api/register" => Create user and return token. 
- 	- Required Body: 
- 		- username: string
- 		- email: string
- 		- password: string
+ 1. "/api/register" => Create user and return token. 
+ 	a. Required Body: 
+ 		1) username: string
+ 		2) email: string
+ 		3) password: string
 
- - "/api/login" => Log In user and return token. 
- 	- Required Body:
- 		- email: string
- 		- password: string
+ 2. "/api/login" => Log In user and return token. 
+ 	a. Required Body:
+ 		1) email: string
+ 		2) password: string
 ```
 
 
@@ -78,52 +78,52 @@ $ npm start
 
 #### GET Request
 ```
- * "/api/product" => Display products, with default pagination {page: 1, limit: 4}. 
- 	* Possible Query:
-		* search -> {input: search keywords}, search products that have {input} in their title.
-		* sortby -> {input: column name}, sort products based on {input}.
-	    * sort   -> {input: asc / desc}, sort products ascending or descending based on {input}.
-	    * page 	 -> {input: number}, display page based on {input}.
-	    * limit  -> {input: number}, config how many product displayed on page.
+ 1. "/api/product" => Display products, with default pagination {page: 1, limit: 4}. 
+ 	a. Possible Query:
+		1) search -> {input: search keywords}, search products that have {input} in their title.
+		2) sortby -> {input: column name}, sort products based on {input}.
+	    3) sort   -> {input: asc / desc}, sort products ascending or descending based on {input}.
+	    4) page	  -> {input: number}, display page based on {input}.
+	    5) limit  -> {input: number}, config how many product displayed on page.
 
- - "/api/product/{id}" => Display product with {id}.
+ 2. "/api/product/{id}" => Display product with {id}.
 ```
 
 #### POST Request
 ```
- - "/api/product" => Create product and return inserted data.
- 	- Required Header: { auth: token }
- 	- Required Body: 
- 		- name: string
- 		- description: string
- 		- image: string //image url
- 		- id_category: number
- 		- quantity: number
+ 1. "/api/product" => Create product and return inserted data.
+ 	a. Required Header: { auth: token }
+ 	b. Required Body: 
+ 		1) name: string
+ 		2) description: string
+ 		3) image: string //image url
+ 		4) id_category: number
+ 		5) quantity: number
 ```
 
 #### PUT Request
 ```
- - "/api/product/{id}" => Update product with {id} and return inserted data.
- 	- Required Header: { auth: token }
- 	- Required Body: 
- 		- name: string
- 		- description: string
- 		- image: string //image url
- 		- id_category: number
- 		- quantity: number
+ 1. "/api/product/{id}" => Update product with {id} and return inserted data.
+ 	a. Required Header: { auth: token }
+ 	b. Required Body: 
+ 		1) name: string
+ 		2) description: string
+ 		3) image: string //image url
+ 		4) id_category: number
+ 		5) quantity: number
  ```
 
 #### PATCH Request
 ```
- - "/api/product/{id}" => Add or reduce product quantity with {id}.
- 	- Required Header : { auth: token }
- 	- Required Body: { action: add / reduce }
- 	- Possible Body: { by: how many quantity will be {action} }
+ 1. "/api/product/{id}" => Add or reduce product quantity with {id}.
+ 	a. Required Header : { auth: token }
+ 	b. Required Body: { action: add / reduce }
+ 	c. Possible Body: { by: how many quantity will be {action} }
 ```
 
 #### DELETE Request
 ```
- - "/api/product/{id}" => Delete product with {id}.
+ 1. "/api/product/{id}" => Delete product with {id}.
 ```
 
 
@@ -131,23 +131,23 @@ $ npm start
 
 #### GET Request
 ```
- - "/api/cateogry" => Display categories. 
+ 1. "/api/cateogry" => Display categories. 
 
- - "/api/product/{id}" => Display category with {id}.
+ 2. "/api/product/{id}" => Display category with {id}.
 ```
 
 #### POST Request
 ```
- - "/api/category" => Create category and return inserted data.
- 	- Required Header: { auth: token }
- 	- Required Body: { name: string }
+ 1. "/api/category" => Create category and return inserted data.
+ 	a. Required Header: { auth: token }
+ 	b. Required Body: { name: string }
 ```
 
 #### PUT Request
 ```
- - "/api/category/{id}" => Update category with {id} and return inserted data.
- 	- Required Header: { auth: token }
- 	- Required Body: { name: string }
+ 1. "/api/category/{id}" => Update category with {id} and return inserted data.
+ 	a. Required Header: { auth: token }
+ 	b. Required Body: { name: string }
 ```
 
 #### DELETE Request
