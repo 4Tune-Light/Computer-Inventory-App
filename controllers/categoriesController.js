@@ -70,7 +70,7 @@ exports.createCategory = (req, res, next) => {
 
   model.createData(data)
     .then(result => res.json({
-      status: 200,
+      status: 201,
       error: false,
       message: `Success to create category`,
       id: result.insertId,

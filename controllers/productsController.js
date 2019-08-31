@@ -30,7 +30,8 @@ exports.getProducts = (req, res, next) => {
       }
     })
     .catch(err => {
-      
+      err.status = 400
+      err.message = 'Products not found'
       next(err);
     })
 }
@@ -85,7 +86,7 @@ exports.createProduct = (req, res, next) => {
 
   model.createData(data)
     .then(result => res.json({
-      status: 200,
+      status: 201,
       error: false,
       message: `Success to create product`,
       id: result.insertId,

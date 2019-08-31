@@ -97,7 +97,7 @@ $ npm start
 #### POST Request
 ```
  1. "/api/product" => Create product and return inserted data.
-    a. Required Header: { auth: token }
+    a. Required Header: { auth: token, username: username, email: email }
     b. Required Body: 
        1) name: string
        2) description: string
@@ -109,7 +109,7 @@ $ npm start
 #### PUT Request
 ```
  1. "/api/product/{id}" => Update product with {id} and return inserted data.
-    a. Required Header: { auth: token }
+    a. Required Header: { auth: token, username: username, email: email }
     b. Required Body: 
        1) name: string
        2) description: string
@@ -121,7 +121,7 @@ $ npm start
 #### PATCH Request
 ```
  1. "/api/product/{id}" => Add or reduce product quantity with {id}.
-    a. Required Header : { auth: token }
+    a. Required Header : { auth: token, username: username, email: email }
     b. Required Body: { action: add / reduce }
     c. Options Body: { by: how many quantity will be {action} }
 ```
@@ -129,7 +129,7 @@ $ npm start
 #### DELETE Request
 ```
  1. "/api/product/{id}" => Delete product with {id}.
-    a. Required Header : { auth: token }
+    a. Required Header : { auth: token, username: username, email: email }
 
 ```
 
@@ -146,20 +146,21 @@ $ npm start
 #### POST Request
 ```
  1. "/api/category" => Create category and return inserted data.
-    a. Required Header: { auth: token }
+    a. Required Header: { auth: token, username: username, email: email }
     b. Required Body: { name: string }
 ```
 
 #### PUT Request
 ```
  1. "/api/category/{id}" => Update category with {id} and return inserted data.
-    a. Required Header: { auth: token }
+    a. Required Header: { auth: token, username: username, email: email }
     b. Required Body: { name: string }
 ```
 
 #### DELETE Request
 ```
  1. "/api/category/{id}" => Delete category with {id}.
+    a. Required Header: { auth: token, username: username, email: email }
 ```
 
 

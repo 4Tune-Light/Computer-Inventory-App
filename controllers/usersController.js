@@ -35,7 +35,7 @@ exports.createUser = (req, res, next) => {
 					  			.then(result => {
 					  				const token = jwt.sign({username, email}, process.env.JWT_KEY, { expiresIn: process.env.JWT_EXP })
 					  				res.json({
-								      status: 200,
+								      status: 201,
 								      error: false,
 								      message: `Success to register`,
 								      id: result.insertId,
@@ -103,7 +103,7 @@ exports.loginUser = (req, res, next) => {
       } else {
       	const err = new Error
         err.status = 400
-        err.message = 'Email does not exist'
+        err.message = 'Email or password is wrong'
         next(err);
       }
     })
