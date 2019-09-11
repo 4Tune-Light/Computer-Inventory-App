@@ -4,13 +4,11 @@ const conn = require('../configs/db')
 
 exports.getDatas = (data) => {
 	return new Promise((resolve, reject) => {
-		const query = 'SELECT a.id, a.name, a.description, a.image, b.name AS category, a.quantity, a.created_at, a.updated_at' + 
+		const query = 'SELECT a.id, a.name, a.description, a.image, a.id_category, b.name AS category, a.quantity, a.created_at, a.updated_at' + 
 				      ' FROM products AS a INNER JOIN categories AS b ON a.id_category = b.id' +
 				      ' WHERE a.name LIKE ?' +
 				      ' ORDER BY ' + data.sortBy + ' '+ data.sort +' LIMIT ?, ?'
 		const query2 = '; SELECT COUNT(*) as total FROM products WHERE name LIKE ?'
-
-		console.log(query + query2)
 
 		conn.query(query + query2, [data.search, data.offset, data.limit, data.search], (err, result) => {
 			if (err) {
@@ -26,7 +24,7 @@ exports.getDatas = (data) => {
 
 exports.getData = (id) => {
 	return new Promise((resolve, reject) => {
-		const query = 'SELECT a.id, a.name, a.description, a.image, b.name AS category, a.quantity, a.created_at, a.updated_at' + 
+		const query = 'SELECT a.id, a.name, a.description, a.image, a.id_category, b.name AS category, a.quantity, a.created_at, a.updated_at' + 
 				      		' FROM products AS a INNER JOIN categories AS b ON a.id_category = b.id' +
 				      		' WHERE a.id = ?'
 		

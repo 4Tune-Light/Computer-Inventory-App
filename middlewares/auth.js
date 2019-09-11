@@ -5,7 +5,7 @@ function verifyToken(req, res, next) {
 	const {auth, username, email} = req.headers
 
 	if (typeof auth == 'undefined' || typeof username == 'undefined' || typeof email == 'undefined') {
-		res.status(401)
+		localStorage.clear()
 		res.json({
 			status: 401,
 			message: 'Forbidden Access'
@@ -15,7 +15,7 @@ function verifyToken(req, res, next) {
 		if (decoded.username == username && decoded.email == email) {
 			jwt.verify(auth, process.env.JWT_KEY, (err, data) => {
 				if (err) {
-					res.status(401)
+					localStorage.clear()
 					res.json({
 						status: 401,
 						message: 'Forbidden access, invalid token'
@@ -25,7 +25,7 @@ function verifyToken(req, res, next) {
 				}
 			})
 		} else {
-			res.status(401)
+			localStorage.clear()
 			res.json({
 				status: 401,
 				message: 'Forbidden access, invalid token'

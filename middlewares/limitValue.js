@@ -2,7 +2,7 @@ const conn = require('../configs/db');
 
 function limitValue (req, res, next) {
   if ((isNaN(Number(req.query.page)) === false && isNaN(Number(req.query.limit)) === false) || (!req.query.page || !req.query.limit)) {
-    req.limit = parseInt(req.query.limit) || 4
+    req.limit = parseInt(req.query.limit) || 6
     req.offset = (parseInt(req.query.page) - 1) * req.limit || 0
 
 		let query = 'SELECT COUNT(id) as total FROM products'

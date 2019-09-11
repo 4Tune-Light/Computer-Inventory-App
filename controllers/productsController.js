@@ -6,8 +6,8 @@ const model = require('../models/productsModel')
 exports.getProducts = (req, res, next) => {
   const limit = req.limit
   const offset = req.offset
-  const sortBy = req.query.sortBy || 'id'
-  const sort = req.query.sort || 'ASC'
+  const sortBy = req.query.sortBy || 'updated_at'
+  const sort = req.query.sort || 'DESC'
   const search = req.query.search ? `%${req.query.search}%` : '%%'
 
   const data = {sortBy, sort, limit, offset, search}
@@ -64,20 +64,15 @@ exports.getProduct = (req, res, next) => {
 
 
 exports.createProduct = (req, res, next) => {
-  const {name, description, image, id_category, quantity} = req.body;
+  const {name, description, image, id_category} = req.body;
+
+  const quantity = Number(req.body.quantity);
 
   if (!name || !description|| !image|| !id_category|| !quantity) {
-    const err = new Error
-    err.status = 400
-    err.message = 'Name, description, image, category, and quantity are required'
-    next(err)
-  }
-
-  if (isNaN(Number(id_category)) === true && isNaN(Number(quantity)) === true) {
-    const err = new Error
-    err.status = 400
-    err.message = 'Wrong insert value'
-    next(err)
+    res.json({
+      status: 400,
+      message: 'Name, description, image, category, and quantity are required'
+    })
   }
 
   const data = {
@@ -92,11 +87,10 @@ exports.createProduct = (req, res, next) => {
       id: result.insertId,
       data
     }))
-    .catch(err => {
-      err.status = 400
-      err.message = `Failed to create product`
-      next(err);
-    })
+    .catch(err => res.json({
+      status: 400,
+      message: 'Failed to create product'
+    }))
 }
 
 
@@ -155,6 +149,8 @@ exports.addOrReduceQuantity = (req, res, next) => {
     .then(result => res.json({
       status: 200,
       error: false,
+      id: req.params.id,
+      action,
       message: `Success to ${action} product quantity by ${by} with id ${req.params.id}`,
       updated_at: new Date()
     }))
@@ -168,6 +164,7 @@ exports.deleteProduct = (req, res, next) => {
     .then(result => res.json({
       status: 200,
       error: false,
+      id: req.params.id,
       message: `Success to delete product with id ${req.params.id}`
     }))
     .catch(err => {

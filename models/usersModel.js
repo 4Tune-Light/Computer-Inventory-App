@@ -22,8 +22,6 @@ exports.getData = (email) => {
 	return new Promise((resolve, reject) => {
 		const query = 'SELECT * FROM users WHERE email = ?'
 		
-		console.log(email)
-		console.log(query)
 		conn.query(query, email, (err, result) => {
 			if (err) {
 				reject(err)
@@ -42,7 +40,7 @@ exports.verifyUsername = (username) => {
   			reject(err);
   		} else {
   			if (result.length > 0) {
-  				const err = new Error
+  				const err = {}
   				err.status = 409
   				err.message = 'Username alredy exist'
   				reject(err)

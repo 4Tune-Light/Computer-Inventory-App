@@ -11,10 +11,10 @@ exports.createUser = (req, res, next) => {
   const {username, password, email} = req.body;  
 
   if (!username || !password|| !email) {
-		  const err = new Error
-		  err.status = 400
-		  err.message = 'Username, password, and email are required'
-		  reject(err)
+	  res.json({
+	  	status: 400,
+	  	message: 'Username, password, and email are required'
+	  })
 	}
 
   model.verifyUsername(username)
@@ -33,7 +33,7 @@ exports.createUser = (req, res, next) => {
 					  		data.password = hash
 					  		model.createData(data)
 					  			.then(result => {
-					  				const token = jwt.sign({username, email}, process.env.JWT_KEY, { expiresIn: process.env.JWT_EXP })
+					  				const token = jwt.sign({username, email}, process.env.JWT_KEY)
 					  				res.json({
 								      status: 201,
 								      error: false,
@@ -46,19 +46,19 @@ exports.createUser = (req, res, next) => {
 								      token
 								    })
 					  			})
-						    .catch(err => {
-						      err.status = 400
-						      err.message = `Failed to register`
-						      next(err);
-						    })
+							    .catch(err => {
+							      err.status = 400
+							      err.message = `Failed to register`
+							      next(err);
+							    })
 							}
 					  })
 					})
 					
   			})
-  			.catch(err => next(err))
+  			.catch(err => res.json(err))
   	})
-  	.catch(err => next(err))
+  	.catch(err => res.json(err))
 
   
   
@@ -71,10 +71,10 @@ exports.loginUser = (req, res, next) => {
   const {email, password} = req.body
 
 	if (!email|| !password) {
-    const err = new Error
-    err.status = 400
-    err.message = 'Email and password are required'
-    next(err)
+		res.json({
+			status: 400,
+			message: 'Email and password are required'
+		})
   }
 
   model.getData(email)
@@ -82,8 +82,8 @@ exports.loginUser = (req, res, next) => {
       if (result.length > 0) {
       	bcrypt.compare(password, result[0].password, function(err, match) {
 	    		if (match) {
-	    			const token = jwt.sign({username: result[0].username, email: result[0].email}, process.env.JWT_KEY, { expiresIn: process.env.JWT_EXP });
-						res.status(200).json({
+	    			const token = jwt.sign({username: result[0].username, email: result[0].email}, process.env.JWT_KEY);
+						res.json({
 							status: 200,
 							error: false,
 							user: {
@@ -94,17 +94,17 @@ exports.loginUser = (req, res, next) => {
 							token
 						})
 					} else {
-						const err = new Error
-		        err.status = 400
-		        err.message = 'Email or password is wrong'
-		        next(err);
+						res.json({
+							status: 400,
+							message: 'Email or password is wrong'
+						})
 					}
 				})
       } else {
-      	const err = new Error
-        err.status = 400
-        err.message = 'Email or password is wrong'
-        next(err);
+      	res.json({
+					status: 400,
+					message: 'Email or password is wrong'
+				})
       }
     })
     .catch(err => {
