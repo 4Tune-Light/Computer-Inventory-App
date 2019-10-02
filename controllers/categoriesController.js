@@ -4,7 +4,9 @@ const model = require('../models/categoriesModel')
 
 
 exports.getCategories = (req, res, next) => {
-  model.getDatas()
+  const search = req.query.search ? `%${req.query.search}%` : '%%'
+
+  model.getDatas(search)
     .then(result => {
       if (result.length > 0) {
         res.json({

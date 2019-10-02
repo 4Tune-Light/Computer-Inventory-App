@@ -11,7 +11,7 @@ exports.createUser = (req, res, next) => {
   const {username, password, email} = req.body;  
 
   if (!username || !password|| !email) {
-	  res.json({
+	  res.status(400).json({
 	  	status: 400,
 	  	message: 'Username, password, and email are required'
 	  })
@@ -34,7 +34,7 @@ exports.createUser = (req, res, next) => {
 					  		model.createData(data)
 					  			.then(result => {
 					  				const token = jwt.sign({username, email}, process.env.JWT_KEY)
-					  				res.json({
+					  				res.status(201).json({
 								      status: 201,
 								      error: false,
 								      message: `Success to register`,
@@ -56,9 +56,9 @@ exports.createUser = (req, res, next) => {
 					})
 					
   			})
-  			.catch(err => res.json(err))
+  			.catch(err => next(err))
   	})
-  	.catch(err => res.json(err))
+  	.catch(err => next(err))
 
   
   
@@ -71,7 +71,7 @@ exports.loginUser = (req, res, next) => {
   const {email, password} = req.body
 
 	if (!email|| !password) {
-		res.json({
+		res.status(400).json({
 			status: 400,
 			message: 'Email and password are required'
 		})
@@ -94,14 +94,14 @@ exports.loginUser = (req, res, next) => {
 							token
 						})
 					} else {
-						res.json({
+						res.status(400).json({
 							status: 400,
 							message: 'Email or password is wrong'
 						})
 					}
 				})
       } else {
-      	res.json({
+      	res.status(400).json({
 					status: 400,
 					message: 'Email or password is wrong'
 				})

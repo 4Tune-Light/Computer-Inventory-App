@@ -86,7 +86,7 @@ exports.addOrReduce = (data, id) => {
 				}
 			})
 		} else if (data.action == 'reduce') {
-			query = 'UPDATE products SET quantity = quantity - ?, updated_at = ? WHERE id = ? AND quantity > 0 AND quantity > ?'
+			query = 'UPDATE products SET quantity = quantity - ?, updated_at = ? WHERE id = ? AND quantity >= 0 AND quantity >= ?'
 			conn.query(query, [data.by, data.updated_at, id, data.by], (err, result) => {
 				if (err) {
 					reject(err)
@@ -94,7 +94,7 @@ exports.addOrReduce = (data, id) => {
 					if (result.affectedRows > 0) {
 						resolve(result)
 					} else {
-						const err = new Error
+						const err = {}
 						err.status = 400
 						err.message = 'Quantity cannot be less than 0'
 						reject(err)

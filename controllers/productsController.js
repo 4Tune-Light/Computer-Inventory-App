@@ -14,7 +14,7 @@ exports.getProducts = (req, res, next) => {
 
   model.getDatas(data)
     .then(result => {
-      if (result.length > 0) {
+      if (result[1][0].total > 0) {
         res.json({
           status: 200,
           error: false,
@@ -154,7 +154,7 @@ exports.addOrReduceQuantity = (req, res, next) => {
       message: `Success to ${action} product quantity by ${by} with id ${req.params.id}`,
       updated_at: new Date()
     }))
-    .catch(err => next(err))
+    .catch(err => res.json(err))
 }
 
 

@@ -1,11 +1,10 @@
 const conn = require('../configs/db')
 
 
-exports.getDatas = () => {
+exports.getDatas = search => {
 	return new Promise((resolve, reject) => {
-		const query = 'SELECT * FROM categories'
-		
-		conn.query(query, (err, result) => {
+		const query = 'SELECT * FROM categories WHERE name LIKE ?'
+			conn.query(query, search, (err, result) => {
 			if (err) {
 				reject(err)
 			} else {
